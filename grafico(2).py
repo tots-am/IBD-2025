@@ -22,13 +22,12 @@ def zera_vetor(dicionario):
 
 def plota_grafico(ano, x1, y1, x2, y2, x3, y3, cor1, cor2, cor3, fonte_titulo, fonte_leg, dist):
     
-    fig, eixos = plt.subplots(3, 1, figsize=(30, 22))
-    #plt.figure(figsize = (30,15))
+    fig, eixos = plt.subplots(3, 1, figsize=(32, 24))
 
     plt.subplots_adjust(hspace=0.8) #Espaçamento 
 
     eixos[0].plot(x1, y1, color = cor1)
-    eixos[0].set_title(f'Número de homicídios por Unidade Federativa {ano}', fontsize = fonte_titulo, pad = dist)
+    eixos[0].set_title(f'Número percentual de homicídios por Unidade Federativa {ano}', fontsize = fonte_titulo, pad = dist)
     eixos[0].set_xlabel('Unidade Federativa', fontsize= fonte_leg, labelpad= dist)
     eixos[0].set_ylabel("Homicídios", fontsize= fonte_leg, labelpad= dist)
     eixos[0].fill_between(x1, y1, color = cor1, alpha=0.1)
@@ -49,7 +48,9 @@ def plota_grafico(ano, x1, y1, x2, y2, x3, y3, cor1, cor2, cor3, fonte_titulo, f
     for ax in eixos:
         ax.grid(True)
     
-    # plt.show() se tiver versão interativa do matplotlib
+    for eixo in eixos:
+        eixo.tick_params(axis='both', labelsize=22)  # aumenta fonte dos ticks
+
     plt.savefig("graficos_comparativos.png")
 
 def le_dados(nome, dicionario, x, y, i_ano, ano, i_dado, i_munic, i_vetor):
@@ -68,12 +69,19 @@ def le_dados(nome, dicionario, x, y, i_ano, ano, i_dado, i_munic, i_vetor):
 
         for dados in dicionario.values():
             x.append(dados[0])
-            y.append(round(dados[i_vetor] / dados[4], 2) if i_vetor == 2 else round(dados[i_vetor], 2))
-            # No caso do pib, calcula o pib médio por uf
+
+            if i_vetor == 2:
+                y.append(round(dados[i_vetor] / dados[4], 2))
+            elif i_vetor == 1:
+                y.append((dados[i_vetor] / dados[3])*100)
+            else:
+                y.append(round(dados[i_vetor], 2))
+
+        
 
 def organiza_dados():
 
-    ano= '2010'
+    ano= '2020'
 
     x1 = []
     y1 = []
@@ -86,20 +94,17 @@ def organiza_dados():
 
     zera_vetor(dicionario)
 
-    le_dados('homic.csv', dicionario, x1, y1, 1, ano, 2, 0, 1) # Muda pelo nome que vocês salvaram o arquivo!
-    le_dados('pib.csv', dicionario, x2, y2, 0, ano, 4, 2, 2)
     le_dados('pop.csv', dicionario, x3, y3, 2, ano, 3, 0, 3)
+    le_dados('homic.csv', dicionario, x1, y1, 1, ano, 2, 0, 1) 
+    le_dados('pib.csv', dicionario, x2, y2, 0, ano, 4, 2, 2)
 
 
-    plota_grafico(ano, x1, y1, x2, y2, x3, y3, 'pink', 'yellow', 'red', 34, 25, 20)
+    plota_grafico(ano, x1, y1, x2, y2, x3, y3, 'pink', 'yellow', 'red', 40, 30, 26)
 
 organiza_dados()
 
 
 
 
-#plt.xticks(posicao_legenda,anos_legenda)
-#plt.tick_params(labelsize = 20)
-#plt.xticks(rotation=45,ha='right')
-# source ~/Python/venv/bin/activate
+
 
