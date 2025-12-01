@@ -18,7 +18,7 @@ Exploração da relação entre número de homicídios e PIB dos municípios bra
 ## **Como utilizar**
 
 1. **Carregue** os arquivos `.csv` com os dados em um gerenciador de bancos de dados SQL.
-2. **Crie a visualização** do município que está nas queries.
+2. **Crie a visualização** com as entidades que estão nas queries.
 3. **Realize junções** entre os dados de município e PIB utilizando o campo `cod_ibge` para relacioná-los.
 
 ---
